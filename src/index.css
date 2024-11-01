@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* In your CSS file */
+.custom-font {
+    font-family: 'Poppins', sans-serif;
+  }
+  
