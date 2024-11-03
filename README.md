@@ -1,6 +1,8 @@
 # [SkyPulse](https://skypulse-wd.netlify.app/) - Dynamic Weather Dashboard
 A dynamic weather dashboard built with Vite, TypeScript, and React, featuring real-time weather data, city management, and a responsive design. The application supports dark/light mode and utilizes the OpenWeather API for accurate weather updates.
+
 https://github.com/user-attachments/assets/7d1fa079-ac8a-4ef7-88bc-fb31d24ea2da
+
 ## Table of Contents
 - [Setup Instructions](#setup-instructions)
 - [Tech Stack and Dependencies](#tech-stack-and-dependencies)
