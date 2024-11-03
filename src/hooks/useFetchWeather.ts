@@ -5,7 +5,7 @@ import { WeatherData } from '../types/weatherTypes';
 const useFetchWeather = (city: string) => {
   const [data, setData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Set initial loading state to true
 
   const getWeather = async () => {
     setLoading(true);
@@ -30,7 +30,12 @@ const useFetchWeather = (city: string) => {
     }
   }, [city]); // Fetch new data whenever the city changes
 
-  return { data, error, loading, getWeather };
+  return {
+    weatherData: data, // Rename 'data' to 'weatherData'
+    error,
+    isLoading: loading, // Rename 'loading' to 'isLoading'
+    getWeather,
+  };
 };
 
 export default useFetchWeather;

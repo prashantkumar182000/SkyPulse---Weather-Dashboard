@@ -1,4 +1,12 @@
-import { Card, CardContent, Typography, CircularProgress, IconButton, Box, useMediaQuery } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  IconButton,
+  Box,
+  useMediaQuery,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useFetchWeather from '../hooks/useFetchWeather';
 import { styled } from '@mui/material/styles';
@@ -34,23 +42,27 @@ const BackgroundImage = styled(Box)<{ imageUrl: string }>(({ imageUrl }) => ({
 }));
 
 const CityCard = ({ city, onRemove }: CityCardProps) => {
-  const { data, error, loading, getWeather } = useFetchWeather(city);
+  // Destructure based on your hook's return values
+  const { weatherData, error, isLoading, getWeather } = useFetchWeather(city);
   const { theme } = useContext(WeatherContext);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const textColor = theme === 'dark' ? 'white' : 'black';
-  const cityNameColor = theme === 'dark' ? 'white' : '#1e88e5';
+  const cityNameColor = theme === 'dark' ? 'white' : '#1d1160';
   const isSmallScreen = useMediaQuery('(max-width:600px)'); // Media query for small screens
 
   useEffect(() => {
     const fetchImage = async () => {
-      if (data) {
-        const condition = data.weather[0].main.toLowerCase();
+      if (weatherData) {
+        const condition = weatherData.weather[0].main.toLowerCase();
         const apiKey = 'rkLqsF0rpXalqKnUXAh7ELJaZ5bjVSXkJIJZz1QqkDzUFUtqd8xMOj32';
-        const imageResponse = await fetch(`https://api.pexels.com/v1/search?query=${condition}&per_page=1`, {
-          headers: {
-            Authorization: apiKey,
-          },
-        });
+        const imageResponse = await fetch(
+          `https://api.pexels.com/v1/search?query=${condition}&per_page=1`,
+          {
+            headers: {
+              Authorization: apiKey,
+            },
+          }
+        );
         const imageData = await imageResponse.json();
         if (imageData.photos.length > 0) {
           setImageUrl(imageData.photos[0].src.original);
@@ -59,13 +71,19 @@ const CityCard = ({ city, onRemove }: CityCardProps) => {
     };
 
     fetchImage();
-  }, [data]);
+  }, [weatherData]);
 
   return (
     <StyledCard onClick={getWeather}>
       {imageUrl && <BackgroundImage imageUrl={imageUrl} />}
       <IconButton
-        style={{ position: 'absolute', top: 16, right: 16, color: textColor, zIndex: 2 }}
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          color: textColor,
+          zIndex: 2,
+        }}
         onClick={(e) => {
           e.stopPropagation();
           onRemove(city);
@@ -74,30 +92,27 @@ const CityCard = ({ city, onRemove }: CityCardProps) => {
         <DeleteIcon />
       </IconButton>
       <CardContent style={{ position: 'relative', zIndex: 1 }}>
-        {loading ? (
+        {isLoading ? (
           <CircularProgress color="inherit" />
         ) : error ? (
           <Typography color="error">{error}</Typography>
-        ) : data ? (
+        ) : weatherData ? (
           <>
-            {/* City Name with color based on theme */}
             <Typography
               variant="h4"
               style={{
                 fontWeight: 'bold',
                 color: cityNameColor,
-                fontFamily: 'Cursive',
+                fontFamily: "Audiowide",
                 marginBottom: '2rem',
                 textAlign: 'left',
                 fontSize: isSmallScreen ? '1.5rem' : '2rem',
               }}
             >
-              {data.name}
+              {weatherData.name}
             </Typography>
 
-            {/* Flex container for temperature and weather details */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              {/* Temperature on the left in orange */}
               <Typography
                 variant="h1"
                 style={{
@@ -107,46 +122,41 @@ const CityCard = ({ city, onRemove }: CityCardProps) => {
                   lineHeight: '1.2',
                 }}
               >
-                {Math.round(data.main.temp - 273.15)}°
+                {Math.round(weatherData.main.temp - 273.15)}°
               </Typography>
 
-              {/* Right side: Weather description, min/max temperatures, and weather icon */}
               <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginLeft: '16px' }}>
-  {/* Left Box: Weather description and min/max temperature */}
-  <Box display="flex" flexDirection="column">
-  <Typography
-  variant="h5"
-  style={{
-    color: "#D22B2B", // Set text color to red
-    fontWeight: 'bold', // Make the text bold
-    marginBottom: '0.5rem',
-    fontSize: isSmallScreen ? '1rem' : '1.25rem',
-  }}
->
-  {data.weather[0].description.charAt(0).toUpperCase() + data.weather[0].description.slice(1)}
-</Typography>
+                <Box display="flex" flexDirection="column">
+                  <Typography
+                    variant="h5"
+                    style={{
+                      color: '#D22B2B',
+                      fontWeight: 'bold',
+                      marginBottom: '0.5rem',
+                      fontSize: isSmallScreen ? '1rem' : '1.25rem',
+                    }}
+                  >
+                    {weatherData.weather[0].description.charAt(0).toUpperCase() + weatherData.weather[0].description.slice(1)}
+                  </Typography>
+                  <Typography style={{ color: textColor, fontSize: isSmallScreen ? '0.875rem' : '1rem' }}>
+                    Min: {Math.round(weatherData.main.temp_min - 273.15)}°C, Max: {Math.round(weatherData.main.temp_max - 273.15)}°C
+                  </Typography>
+                </Box>
 
-    <Typography style={{ color: textColor, fontSize: isSmallScreen ? '0.875rem' : '1rem' }}>
-      Min: {Math.round(data.main.temp_min - 273.15)}°C, Max: {Math.round(data.main.temp_max - 273.15)}°C
-    </Typography>
-  </Box>
-
-  {/* Right Box: Weather icon */}
-  <Box display="flex" justifyContent="center" alignItems="center">
-    <img
-      src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-      alt={data.weather[0].description}
-      style={{
-        width: isSmallScreen ? '36px' : '48px',
-        height: isSmallScreen ? '36px' : '48px',
-        marginLeft: '8px',
-      }}
-    />
-  </Box>
-</Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                    alt={weatherData.weather[0].description}
+                    style={{
+                      width: isSmallScreen ? '36px' : '48px',
+                      height: isSmallScreen ? '36px' : '48px',
+                      marginLeft: '8px',
+                    }}
+                  />
+                </Box>
+              </Box>
             </Box>
 
-            {/* Additional details like humidity and wind speed */}
             <Typography
               style={{
                 color: textColor,
@@ -154,12 +164,12 @@ const CityCard = ({ city, onRemove }: CityCardProps) => {
                 fontSize: isSmallScreen ? '0.875rem' : '1rem',
               }}
             >
-              Humidity: {data.main.humidity}% | Speed: {data.wind.speed} m/s
+              Humidity: {weatherData.main.humidity}% | Speed: {weatherData.wind.speed} m/s
             </Typography>
           </>
         ) : (
           <Typography style={{ color: textColor }}>
-            Loading <strong style={{ color: "#1e88e5" }}>{city}</strong> weather data...
+            Loading <strong style={{ color: '#1e88e5' }}>{city}</strong> weather data...
           </Typography>
         )}
       </CardContent>
