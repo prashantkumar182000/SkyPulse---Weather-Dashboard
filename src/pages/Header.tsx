@@ -3,12 +3,12 @@ import ThemeToggle from '../components/ThemeToggle';
 
 const Header = () => {
   return (
-    <AppBar position="static" className="bg-blue-600">
+    <AppBar position="fixed" className="bg-blue-600">
       <Toolbar className="flex justify-between items-center">
         <Box>
-        <Typography variant="h4" component="div" className="font-bold custom-font">
-  SkyPulse
-</Typography>
+          <Typography variant="h4" component="div" className="font-bold custom-font">
+            SkyPulse
+          </Typography>
           <Typography
             variant="subtitle1"
             className="text-sm"

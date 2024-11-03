@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchWeather } from '../services/weatherAPI';
 import { WeatherData } from '../types/weatherTypes';
 
@@ -13,12 +13,22 @@ const useFetchWeather = (city: string) => {
     try {
       const result = await fetchWeather(city);
       setData(result);
-    } catch (err) {
-      setError("Failed to load weather data.");
+    } catch (err: any) {
+      if (err.response && err.response.status === 404) {
+        setError("City not found. Please try again.");
+      } else {
+        setError("Failed to load weather data. Please try again later.");
+      }
     } finally {
-      setLoading(false);
+      setLoading(false); // Ensure loading is set to false after API call
     }
   };
+
+  useEffect(() => {
+    if (city) {
+      getWeather();
+    }
+  }, [city]); // Fetch new data whenever the city changes
 
   return { data, error, loading, getWeather };
 };

@@ -13,7 +13,7 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => (
       <Typography>Min Temperature: {data.main.temp_min}°C</Typography>
       <Typography>Max Temperature: {data.main.temp_max}°C</Typography>
       <Typography>Humidity: {data.main.humidity}%</Typography>
-      <Typography>Wind Speed: {data.wind.speed} m/s</Typography>
+      <Typography>Speed: {data.wind.speed} m/s</Typography>
       <Typography>Condition: {data.weather[0].description}</Typography>
     </CardContent>
   </Card>
