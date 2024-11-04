@@ -39,37 +39,48 @@ https://github.com/user-attachments/assets/9722b6ab-d61e-4136-b30e-5549e9cc1f80
 - **API**: OpenWeatherMap
 - **State Management**: Context API (optional)
 ### Project Tree
-```
-DynamicWeatherDashboard/
+```DynamicWeatherDashboard/
 ├── public/
 │   ├── index.html
 │   └── icons/
 ├── src/
-│   ├── assets/                // Images and icons
-│   ├── components/            // Core reusable components
-│   │   ├── CityCard.tsx       // Component for each city weather card
-│   │   ├── WeatherDetails.tsx  // Component for detailed weather view
-│   │   └── ThemeToggle.tsx     // Dark/Light theme toggle
-│   ├── hooks/                 // Custom hooks
-│   │   └── useFetchWeather.ts  // API fetching logic
-│   ├── context/               // Context API (optional)
+│   ├── assets/                   // Images and icons
+│   │   └── weather-video.mp4     // Background video for the dashboard
+│   ├── components/               // Core reusable components
+│   │   ├── CityCard.tsx          // Component for each city weather card
+│   │   ├── WeatherDetails.tsx    // Component for detailed weather view
+│   │   └── ThemeToggle.tsx       // Dark/Light theme toggle
+│   ├── hooks/                    // Custom hooks
+│   │   └── useFetchWeather.ts    // API fetching logic
+│   ├── context/                  // Context API (optional)
 │   │   └── WeatherContext.tsx
 │   ├── pages/
-│   │   ├── Dashboard.tsx      // Main dashboard page
-│   │   └── NotFound.tsx       // 404 page (optional)
-│   ├── services/              // API services
-│   │   └── weatherAPI.ts      // OpenWeatherMap API calls
-│   ├── utils/                 // Utility functions
-│   │   └── formatDate.ts      // Example utility for date formatting
-│   ├── types/                 // TypeScript types and interfaces
-│   │   └── weatherTypes.ts    // Weather-related types
-│   ├── App.tsx                // Root component
-│   ├── main.tsx               // Main entry
-│   ├── index.css              // Tailwind CSS styles (if using Tailwind)
-│   └── theme.ts               // Theme configuration
-├── .env                       // API key for OpenWeatherMap
-├── vite.config.ts             // Vite configuration
-└── tsconfig.json              // TypeScript configuration
+│   │   ├── Dashboard.tsx         // Main dashboard page
+│   │   ├── Header.tsx            // Header component
+│   │   └── NotFound.tsx          // 404 page (optional)
+│   ├── services/                 // API services
+│   │   └── weatherAPI.ts         // OpenWeatherMap API calls
+│   ├── utils/                    // Utility functions
+│   │   └── formatDate.ts         // Utility for date formatting
+│   ├── types/                    // TypeScript types and interfaces
+│   │   └── weatherTypes.ts       // Weather-related types
+│   ├── __tests__/                // Unit tests
+│   │   ├── CityCard.test.tsx     // Unit tests for CityCard component
+│   │   ├── WeatherDetails.test.tsx // Unit tests for WeatherDetails component
+│   │   ├── ThemeToggle.test.tsx  // Unit tests for ThemeToggle component
+│   │   ├── Dashboard.test.tsx    // Unit tests for Dashboard page
+│   │   └── useFetchWeather.test.ts // Unit tests for useFetchWeather hook
+│   ├── App.tsx                   // Root component
+│   ├── main.tsx                  // Main entry
+│   ├── index.css                 // Tailwind CSS styles (if using Tailwind)
+│   └── theme.ts                  // Theme configuration
+├── .env                          // API key for OpenWeatherMap
+├── jest.config.ts                // Jest configuration
+├── jest.setup.js                 // Jest setup file (for jest-dom setup)
+├── vite.config.ts                // Vite configuration
+├── package.json
+└── tsconfig.json                 // TypeScript configuration
+
 ```
 ## API Key Requirements
 - You need an API key from OpenWeatherMap to access the weather data. Sign up at [OpenWeatherMap](https://openweathermap.org/) to get your API key and add it to the `.env` file as shown in the setup instructions.
