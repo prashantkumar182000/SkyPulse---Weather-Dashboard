@@ -94,7 +94,5 @@ https://github.com/user-attachments/assets/9722b6ab-d61e-4136-b30e-5549e9cc1f80
 - Users have an internet connection to fetch weather data.
 - The OpenWeather API is available and operational.
 ## Future Improvements
-- Implement error handling for API requests.
 - Add more weather details such as forecasts and historical data.
-- Improve UI/UX with additional animations and transitions.
 - Allow users to save their favorite cities for quick access.
