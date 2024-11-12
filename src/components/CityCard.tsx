@@ -3,15 +3,16 @@ import {
   CardContent,
   Typography,
   CircularProgress,
-  IconButton,
   Box,
   useMediaQuery,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useFetchWeather from '../hooks/useFetchWeather';
+import useFetchImage from '../hooks/useFetchImage';
 import { styled } from '@mui/material/styles';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { WeatherContext } from '../context/WeatherContext';
+import StyledDeleteButton from './StyledDeleteButton';
 
 interface CityCardProps {
   city: string;
@@ -38,59 +39,28 @@ const BackgroundImage = styled(Box)<{ imageUrl: string }>(({ imageUrl }) => ({
   backgroundImage: `url(${imageUrl})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  opacity: 0.3,
+  opacity: 0.4,
 }));
 
 const CityCard = ({ city, onRemove }: CityCardProps) => {
-  // Destructure based on your hook's return values
   const { weatherData, error, isLoading, getWeather } = useFetchWeather(city);
   const { theme } = useContext(WeatherContext);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const imageUrl = useFetchImage(weatherData?.weather[0].main.toLowerCase());
   const textColor = theme === 'dark' ? 'white' : 'black';
   const cityNameColor = theme === 'dark' ? 'white' : '#1d1160';
-  const isSmallScreen = useMediaQuery('(max-width:600px)'); // Media query for small screens
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
 
-  useEffect(() => {
-    const fetchImage = async () => {
-      if (weatherData) {
-        const condition = weatherData.weather[0].main.toLowerCase();
-        const apiKey = 'rkLqsF0rpXalqKnUXAh7ELJaZ5bjVSXkJIJZz1QqkDzUFUtqd8xMOj32';
-        const imageResponse = await fetch(
-          `https://api.pexels.com/v1/search?query=${condition}&per_page=1`,
-          {
-            headers: {
-              Authorization: apiKey,
-            },
-          }
-        );
-        const imageData = await imageResponse.json();
-        if (imageData.photos.length > 0) {
-          setImageUrl(imageData.photos[0].src.original);
-        }
-      }
-    };
-
-    fetchImage();
-  }, [weatherData]);
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove(city);
+  };
 
   return (
     <StyledCard onClick={getWeather}>
       {imageUrl && <BackgroundImage imageUrl={imageUrl} />}
-      <IconButton
-        style={{
-          position: 'absolute',
-          top: 16,
-          right: 16,
-          color: textColor,
-          zIndex: 2,
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove(city);
-        }}
-      >
+      <StyledDeleteButton color="inherit" onClick={handleRemove} sx={{ color: textColor }}>
         <DeleteIcon />
-      </IconButton>
+      </StyledDeleteButton>
       <CardContent style={{ position: 'relative', zIndex: 1 }}>
         {isLoading ? (
           <CircularProgress color="inherit" />
