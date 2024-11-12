@@ -49,9 +49,11 @@ https://github.com/user-attachments/assets/9722b6ab-d61e-4136-b30e-5549e9cc1f80
 │   ├── components/               // Core reusable components
 │   │   ├── CityCard.tsx          // Component for each city weather card
 │   │   ├── WeatherDetails.tsx    // Component for detailed weather view
-│   │   └── ThemeToggle.tsx       // Dark/Light theme toggle
+│   │   |── ThemeToggle.tsx       // Dark/Light theme toggle
+|   |   └── StyledDeleteButton.tsx // Separate styled component for IconButton 
 │   ├── hooks/                    // Custom hooks
-│   │   └── useFetchWeather.ts    // API fetching logic
+│   │   |── useFetchWeather.ts    // API fetching logic
+|   |   └── useFetchImage.ts      // Card image fetching logic
 │   ├── context/                  // Context API (optional)
 │   │   └── WeatherContext.tsx
 │   ├── pages/
